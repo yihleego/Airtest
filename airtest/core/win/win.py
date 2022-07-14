@@ -56,15 +56,16 @@ class Windows(Device):
 
     def _init_connect(self, handle, kwargs):
         if handle:
-            self.connect(handle=handle)
+            self.connect(handle=handle, **kwargs)
         elif kwargs:
             self.connect(**kwargs)
 
-    def connect(self, handle=None, **kwargs):
+    def connect(self, handle=None, foreground=True, **kwargs):
         """
-        Connect to window and set it foreground
+        Connect to window and optionally set it foreground
 
         Args:
+            foreground: set the window foreground if True
             **kwargs: optional arguments
 
         Returns:
@@ -81,7 +82,8 @@ class Windows(Device):
                     kwargs[k] = int(kwargs[k])
             self.app = self._app.connect(**kwargs)
             self._top_window = self.app.top_window().wrapper_object()
-        self.set_foreground()
+        if foreground:
+            self.set_foreground()
 
     def shell(self, cmd):
         """

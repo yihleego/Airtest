@@ -16,11 +16,12 @@ class WindowsInIDE(Windows):
         super(WindowsInIDE, self).__init__(handle, dpifactor=dpifactor, **kwargs)
         self.handle = handle
 
-    def connect(self, **kwargs):
+    def connect(self, foreground=True, **kwargs):
         """
-        Connect to window and set it foreground
+        Connect to window and optionally set it foreground
 
         Args:
+            foreground: set the window foreground if True
             **kwargs: optional arguments
 
         Returns:
@@ -30,7 +31,8 @@ class WindowsInIDE(Windows):
         self.app = self._app.connect(**kwargs)
         try:
             self._top_window = self.app.top_window().wrapper_object()
-            self.set_foreground()
+            if foreground:
+                self.set_foreground()
         except RuntimeError:
             self._top_window = None
 
